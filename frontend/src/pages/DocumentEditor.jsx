@@ -67,7 +67,7 @@ function DocumentEditor() {
 
   useEffect(() => {
     if (id === 'new') return;
-    const socket = io('http://localhost:3300');
+    const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:3300');
     setSocket(socket);
 
     const userStr = localStorage.getItem('user');

@@ -18,9 +18,15 @@ const passwordResetRoutes = require('./routes/passwordReset.routes');
 
 const app = express();
 const server = http.createServer(app);
+
+const allowedOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://docseditor-1.onrender.com'];
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: allowedOrigins,
     credentials: true
   }
 });
@@ -28,7 +34,7 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 3300;
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(express.json());

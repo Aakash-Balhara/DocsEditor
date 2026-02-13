@@ -53,7 +53,8 @@ exports.signup = async (req, res) => {
             }
         });
 
-        const verificationUrl = `http://localhost:5173/verify-email/${verificationToken}`;
+        const clientUrl = process.env.FRONTEND_URL || 'https://docseditor-1.onrender.com';
+        const verificationUrl = `${clientUrl}/verify-email/${verificationToken}`;
 
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
@@ -155,7 +156,8 @@ exports.update = async (req, res) => {
                     }
                 });
         
-                const verificationUrl = `http://localhost:5173/verify-email/${verificationToken}`;
+                const clientUrl = process.env.FRONTEND_URL || 'https://docseditor-1.onrender.com';
+                const verificationUrl = `${clientUrl}/verify-email/${verificationToken}`;
         
                 await transporter.sendMail({
                     from: process.env.EMAIL_USER,
