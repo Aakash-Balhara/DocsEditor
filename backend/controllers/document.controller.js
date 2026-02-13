@@ -313,8 +313,7 @@ exports.share = async (req, res) => {
                         }
                     });
 
-                    const clientUrl = process.env.FRONTEND_URL || 'https://docseditor-1.onrender.com';
-                    const documentLink = `${clientUrl}/document/${document._id}`;
+                    const documentLink = `http://localhost:5173/document/${document._id}`;
 
                     await transporter.sendMail({
                         from: user.email,

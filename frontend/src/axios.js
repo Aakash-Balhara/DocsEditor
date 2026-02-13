@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://docseditor-cdrg.onrender.com',
+  baseURL: 'https://docseditor-cdrg.onrender.com', 
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },

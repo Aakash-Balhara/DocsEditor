@@ -102,6 +102,8 @@ exports.signin = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000 // 24 hours
     });
 
+    console.log(token);
+
     res.json({
       msg: 'Sign in successful',
       user: {
