@@ -33,10 +33,16 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3300;
 
+
 app.use(cors({
-  origin: allowedOrigins,
+  origin: "https://docseditor-1.onrender.com",
   credentials: true
 }));
+
+// app.use(cors({
+//   origin: allowedOrigins,
+//   credentials: true
+// }));
 app.use(express.json());
 app.use(cookieParser());
 
