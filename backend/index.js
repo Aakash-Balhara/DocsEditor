@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 
 const dotenvResult = dotenv.config();
-if (dotenvResult.error) {
+if (dotenvResult.error && process.env.NODE_ENV !== 'production') {
   console.log("Error loading .env file:", dotenvResult.error);
 }
 
@@ -89,7 +89,7 @@ if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '../frontend/dist');
   app.use(express.static(frontendPath));
 
-  app.get('*', (req, res) => {
+  app.get(/.*/, (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
   });
 }
