@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const baseURL = isLocal ? 'http://localhost:3300' : 'https://docseditor-cdrg.onrender.com';
+const baseURL = isLocal ? 'http://localhost:3300' : '/';
 
 const api = axios.create({
   baseURL: baseURL, 

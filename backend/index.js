@@ -85,6 +85,11 @@ app.use('/auth', authRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/password-reset', passwordResetRoutes);
 
+// Handle 404 for API routes specifically to prevent returning HTML
+app.use('/api', (req, res) => {
+  res.status(404).json({ msg: 'API Endpoint not found' });
+});
+
 if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '../frontend/dist');
   app.use(express.static(frontendPath));

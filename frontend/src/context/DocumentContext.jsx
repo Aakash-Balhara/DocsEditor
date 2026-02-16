@@ -68,7 +68,7 @@ export const DocumentProvider = ({ children }) => {
   useEffect(() => {
     if (id === 'new') return;
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const socketUrl = isLocal ? 'http://localhost:3300' : 'https://docseditor-cdrg.onrender.com';
+    const socketUrl = isLocal ? 'http://localhost:3300' : window.location.origin;
     const newSocket = io(socketUrl);
     setSocket(newSocket);
 
