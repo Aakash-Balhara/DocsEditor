@@ -8,6 +8,7 @@ function Home() {
   const [documents, setDocuments] = useState([]);
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -23,12 +24,15 @@ function Home() {
   }, []);
 
   const createNewDocument = async () => {
+    if (isCreating) return;
+    setIsCreating(true);
     try {
       const response = await api.post('/api/documents', { title: 'Untitled Document' }, { withCredentials: true });
       navigate(`/document/${response.data._id}`);
     } catch (err) {
       console.error(err);
       setError('Failed to create document.');
+      setIsCreating(false);
     }
   };
 
@@ -42,7 +46,9 @@ function Home() {
       <main className="home-main">
         <div className="home-header">
           <h2>My Documents</h2>
-          <button onClick={createNewDocument} className="btn-create">Create New Document</button>
+          <button onClick={createNewDocument} className="btn-create" disabled={isCreating}>
+            {isCreating ? 'Creating...' : 'Create New Document'}
+          </button>
         </div>
         <div className="search-bar-container">
           <input 

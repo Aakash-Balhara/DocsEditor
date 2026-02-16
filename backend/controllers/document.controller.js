@@ -313,7 +313,7 @@ exports.share = async (req, res) => {
                         }
                     });
 
-                    const clientUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+                    const clientUrl = process.env.FRONTEND_URL || req.headers.origin || (process.env.NODE_ENV === 'production' ? 'https://docseditor-cdrg.onrender.com' : 'http://localhost:5173');
                     const documentLink = `${clientUrl}/document/${document._id}`;
 
                     await transporter.sendMail({

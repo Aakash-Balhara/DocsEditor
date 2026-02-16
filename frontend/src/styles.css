@@ -882,3 +882,38 @@ button[type="submit"]:active {
 .theme-toggle:hover {
   transform: scale(1.1);
 }
+
+.btn-close-mobile { display: none; }
+
+@media (max-width: 768px) {
+  .editor-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .editor-title {
+    width: 100%;
+  }
+  .comments-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 85%;
+    max-width: 320px;
+    z-index: 1000;
+    background: #ffffff;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    animation: slideIn 0.3s ease-out;
+    padding: 1rem;
+  }
+  [data-theme='dark'] .comments-sidebar {
+    background: #2d3748;
+    color: #fff;
+  }
+  @keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  .btn-close-mobile { display: block; }
+}

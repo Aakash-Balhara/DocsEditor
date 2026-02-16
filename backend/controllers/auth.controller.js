@@ -53,7 +53,7 @@ exports.signup = async (req, res) => {
         }
       });
 
-      const clientUrl = process.env.FRONTEND_URL || 'https://docseditor-1.onrender.com';
+      const clientUrl = process.env.FRONTEND_URL || req.headers.origin || (process.env.NODE_ENV === 'production' ? 'https://docseditor-cdrg.onrender.com' : 'http://localhost:5173');
       const verificationUrl = `${clientUrl}/verify-email/${verificationToken}`;
 
       await transporter.sendMail({
@@ -102,10 +102,12 @@ exports.signin = async (req, res) => {
     //   maxAge: 24 * 60 * 60 * 1000 // 24 hours
     // });
 
+    const isProduction = process.env.NODE_ENV === 'production';
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "None"
+      secure: isProduction,
+      sameSite:"None",
+      maxAge: 24 * 60 * 60 * 1000
     });
 
 
@@ -165,7 +167,7 @@ exports.update = async (req, res) => {
           }
         });
 
-        const clientUrl = process.env.FRONTEND_URL || 'https://docseditor-1.onrender.com';
+        const clientUrl = process.env.FRONTEND_URL || req.headers.origin || (process.env.NODE_ENV === 'production' ? 'https://docseditor-cdrg.onrender.com' : 'http://localhost:5173');
         const verificationUrl = `${clientUrl}/verify-email/${verificationToken}`;
 
         await transporter.sendMail({
