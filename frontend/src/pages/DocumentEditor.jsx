@@ -257,6 +257,14 @@ function DocumentEditor() {
       <style>{`
         .btn-close-mobile { display: none; }
         @media (max-width: 768px) {
+          .editor-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+          }
+          .editor-title {
+            width: 100%;
+          }
           .comments-sidebar {
             position: fixed;
             top: 0;
