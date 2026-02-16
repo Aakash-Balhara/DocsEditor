@@ -30,6 +30,7 @@ function DocumentEditor() {
   const [shareEmail, setShareEmail] = useState('');
   const [sharedWith, setSharedWith] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
+  const [showComments, setShowComments] = useState(window.innerWidth > 768);
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -67,7 +68,8 @@ function DocumentEditor() {
 
   useEffect(() => {
     if (id === 'new') return;
-    const socket = io('http://localhost:3300');
+    const socketUrl = window.location.hostname === 'localhost' ? 'http://localhost:3300' : 'https://docseditor-cdrg.onrender.com';
+    const socket = io(socketUrl);
     setSocket(socket);
 
     const userStr = localStorage.getItem('user');
@@ -252,6 +254,33 @@ function DocumentEditor() {
 
   return (
     <div>
+      <style>{`
+        .btn-close-mobile { display: none; }
+        @media (max-width: 768px) {
+          .comments-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 85%;
+            max-width: 320px;
+            z-index: 1000;
+            background: #ffffff;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease-out;
+            padding: 1rem;
+          }
+          [data-theme='dark'] .comments-sidebar {
+            background: #2d3748;
+            color: #fff;
+          }
+          @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+          }
+          .btn-close-mobile { display: block; }
+        }
+      `}</style>
       <Header />
       <div className="editor-layout">
         <div className="editor-main">
@@ -272,6 +301,16 @@ function DocumentEditor() {
                   </div>
                 ))}
               </div>
+            {canComment && (
+              <button 
+                onClick={() => setShowComments(!showComments)} 
+                className="btn-toggle-comments"
+                title={showComments ? "Hide Comments" : "Show Comments"}
+                style={{ background: 'transparent', border: 'none', fontSize: '1.5rem', cursor: 'pointer', marginRight: '10px' }}
+              >
+                💬
+              </button>
+            )}
             {canEdit && <button onClick={handleSave} className="btn-save">{isSaving ? 'Saving...' : 'Save'}</button>}
             {isOwner && <button onClick={handleShare} className="btn-share">Share</button>}
             
@@ -294,8 +333,17 @@ function DocumentEditor() {
           <ReactQuill theme="snow" value={value} onChange={handleChange}  modules={modules} readOnly={!canEdit} />
         </div>
         
-        {canComment && (<div className="comments-sidebar">
-          <h3>Comments</h3>
+        {canComment && showComments && (<div className="comments-sidebar">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <h3 style={{ margin: 0 }}>Comments</h3>
+            <button 
+              onClick={() => setShowComments(false)}
+              className="btn-close-mobile"
+              style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'inherit' }}
+            >
+              &times;
+            </button>
+          </div>
           <div className="comments-list">
             {comments.map((comment, index) => (
               <div key={index} className="comment-item">

@@ -313,7 +313,8 @@ exports.share = async (req, res) => {
                         }
                     });
 
-                    const documentLink = `http://localhost:5173/document/${document._id}`;
+                    const clientUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+                    const documentLink = `${clientUrl}/document/${document._id}`;
 
                     await transporter.sendMail({
                         from: user.email,

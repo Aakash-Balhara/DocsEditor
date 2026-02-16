@@ -35,14 +35,9 @@ const PORT = process.env.PORT || 3300;
 
 
 app.use(cors({
-  origin: "https://docseditor-1.onrender.com",
+  origin: allowedOrigins,
   credentials: true
 }));
-
-// app.use(cors({
-//   origin: allowedOrigins,
-//   credentials: true
-// }));
 app.use(express.json());
 app.use(cookieParser());
 
