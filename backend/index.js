@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const path = require('path');
 const { Server } = require('socket.io');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -18,6 +19,7 @@ const passwordResetRoutes = require('./routes/passwordReset.routes');
 
 const app = express();
 const server = http.createServer(app);
+app.set('trust proxy', 1);
 
 const allowedOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://docseditor-1.onrender.com', 'https://docseditor-cdrg.onrender.com'];
 if (process.env.FRONTEND_URL) {
@@ -82,6 +84,15 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/auth', authRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/password-reset', passwordResetRoutes);
+
+if (process.env.NODE_ENV === 'production') {
+  const frontendPath = path.join(__dirname, '../frontend/dist');
+  app.use(express.static(frontendPath));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
+}
 
 // Start Server
 server.listen(PORT, () => {
